@@ -116,7 +116,7 @@ public class SimpleReportStep12 {
         return dataSource;
     }
 
-    private class CurrencyType extends BigDecimalType {
+    private static class CurrencyType extends BigDecimalType {
         private static final long serialVersionUID = 1L;
 
         @Override
