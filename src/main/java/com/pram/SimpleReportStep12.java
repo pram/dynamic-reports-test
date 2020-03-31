@@ -32,9 +32,10 @@ public class SimpleReportStep12 {
 
     /**
      * <p>Constructor for SimpleReport_Step12.</p>
+     * @param imageName - path to image to embed in report
      */
-    public SimpleReportStep12() {
-        build();
+    public SimpleReportStep12(String imageName) {
+        build(imageName);
     }
 
     /**
@@ -43,10 +44,14 @@ public class SimpleReportStep12 {
      * @param args an array of {@link java.lang.String} objects.
      */
     public static void main(String[] args) {
-        new SimpleReportStep12();
+        if (args.length > 0) {
+            new SimpleReportStep12("/images/logo2.png");
+        } else {
+            new SimpleReportStep12("/images/logo.png");
+        }
     }
 
-    private void build() {
+    private void build(String imageName) {
         CurrencyType currencyType = new CurrencyType();
 
         StyleBuilder boldStyle = stl.style().bold();
@@ -89,7 +94,7 @@ public class SimpleReportStep12 {
                     .detailRowHighlighters(condition1, condition2)
                     .title(// shows report title
                            cmp.horizontalList()
-                              .add(cmp.image(Templates.class.getResource("/images/logo.png")).setFixedDimension(80, 80),
+                              .add(cmp.image(Templates.class.getResource(imageName)).setFixedDimension(80, 80),
                                    cmp.text("DynamicReports").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
                                    cmp.text("Getting started").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT))
                               .newRow()
