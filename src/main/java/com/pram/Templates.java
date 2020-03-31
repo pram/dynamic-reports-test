@@ -120,7 +120,7 @@ public class Templates {
         currencyType = new CurrencyType();
 
         HyperLinkBuilder link = hyperLink("http://www.dynamicreports.org");
-        dynamicReportsComponent = cmp.horizontalList(cmp.image(Templates.class.getResource("images/dynamicreports.png")).setFixedDimension(60, 60),
+        dynamicReportsComponent = cmp.horizontalList(cmp.image(Templates.class.getResource("/images/logo.png")).setFixedDimension(60, 60),
                                                      cmp.verticalList(cmp.text("DynamicReports").setStyle(bold22CenteredStyle).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
                                                                       cmp.text("http://www.dynamicreports.org").setStyle(italicStyle).setHyperLink(link))).setFixedWidth(300);
 
