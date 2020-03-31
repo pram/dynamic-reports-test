@@ -51,7 +51,7 @@ public class DetailJasperSubreport {
     }
 
     private JRDataSource createDataSource() {
-        return new JREmptyDataSource(3);
+        return new JREmptyDataSource(4);
     }
 
     private JasperReport getJasperSubreport() throws JRException {

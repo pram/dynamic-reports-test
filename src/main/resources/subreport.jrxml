@@ -26,7 +26,7 @@
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="title.textField1" style="style_24_" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="575" height="20"/>
                 <textElement/>
-                <textFieldExpression class="java.lang.String"><![CDATA["Subreport" + $P{MASTER_REPORT_PARAMETERS}.getReportRowNumber()]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA["Subreport -- " + $P{MASTER_REPORT_PARAMETERS}.getReportRowNumber()]]></textFieldExpression>
             </textField>
         </band>
     </title>
