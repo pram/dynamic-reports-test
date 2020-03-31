@@ -89,7 +89,7 @@ public class SimpleReportStep12 {
                     .detailRowHighlighters(condition1, condition2)
                     .title(// shows report title
                            cmp.horizontalList()
-                              .add(cmp.image(Templates.class.getResource("images/dynamicreports.png")).setFixedDimension(80, 80),
+                              .add(cmp.image(Templates.class.getResource("/images/logo.png")).setFixedDimension(80, 80),
                                    cmp.text("DynamicReports").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
                                    cmp.text("Getting started").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT))
                               .newRow()
