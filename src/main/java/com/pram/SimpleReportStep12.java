@@ -29,7 +29,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.sbt;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
-public class SimpleReportStep12 {
+public class SimpleReportStep12 implements SimpleReport {
 
     /**
      * <p>Constructor for SimpleReport_Step12.</p>

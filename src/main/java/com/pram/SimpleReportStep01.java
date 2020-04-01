@@ -12,7 +12,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
-public class SimpleReportStep01 {
+public class SimpleReportStep01 implements SimpleReport {
 
     public SimpleReportStep01() {
         this(true);
@@ -38,6 +38,7 @@ public class SimpleReportStep01 {
         }
     }
 
+    @Override
     public JasperReportBuilder generateReport() {
         return report()// create new report design
                 // add columns

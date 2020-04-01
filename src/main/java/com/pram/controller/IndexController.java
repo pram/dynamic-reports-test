@@ -1,8 +1,10 @@
 package com.pram.controller;
 
+import com.pram.SimpleReport;
 import com.pram.SimpleReportStep01;
 import com.pram.SimpleReportStep12;
 import com.pram.model.User;
+import net.sf.dynamicreports.jasper.constant.ImageType;
 import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -73,7 +75,7 @@ public class IndexController {
         model.addAttribute("message", "PDF Report Generator");
         model.addAttribute("users", users);
 
-        SimpleReportStep12 report = new SimpleReportStep12(false);
+        SimpleReport report = new SimpleReportStep12(false);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         report.generateReport().toPdf(out);
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
@@ -94,7 +96,7 @@ public class IndexController {
         model.addAttribute("message", "Excel Report Generator");
         model.addAttribute("users", users);
 
-        SimpleReportStep12 report = new SimpleReportStep12(false);
+        SimpleReport report = new SimpleReportStep12(false);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         report.generateReport().toXlsx(out);
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
@@ -106,6 +108,27 @@ public class IndexController {
                 .ok()
                 .headers(headers)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/generate-image-preview", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<InputStreamResource> generateImagePreview(Model model) throws DRException {
+
+        model.addAttribute("message", "Excel Report Generator");
+        model.addAttribute("users", users);
+
+        SimpleReport report = new SimpleReportStep12(false);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        report.generateReport().toImage(out, ImageType.PNG) ;
+        ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=users-report.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.IMAGE_PNG)
                 .body(new InputStreamResource(bis));
     }
 
