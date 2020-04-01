@@ -1,6 +1,7 @@
 package com.pram.controller;
 
 import com.pram.SimpleReportStep01;
+import com.pram.SimpleReportStep12;
 import com.pram.model.User;
 import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,9 +73,9 @@ public class IndexController {
         model.addAttribute("message", "PDF Report Generator");
         model.addAttribute("users", users);
 
-        SimpleReportStep01 simpleReportStep01 = new SimpleReportStep01();
+        SimpleReportStep12 report = new SimpleReportStep12(false);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        simpleReportStep01.generateReport().toPdf(out);
+        report.generateReport().toPdf(out);
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
 
         HttpHeaders headers = new HttpHeaders();
@@ -84,6 +85,27 @@ public class IndexController {
                 .ok()
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/generate-excel-report", method = RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> generateExcelReport(Model model) throws DRException {
+
+        model.addAttribute("message", "Excel Report Generator");
+        model.addAttribute("users", users);
+
+        SimpleReportStep12 report = new SimpleReportStep12(false);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        report.generateReport().toXlsx(out);
+        ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=users-report.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .body(new InputStreamResource(bis));
     }
 

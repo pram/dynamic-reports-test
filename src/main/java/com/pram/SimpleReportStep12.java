@@ -1,5 +1,6 @@
 package com.pram;
 
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.chart.Bar3DChartBuilder;
 import net.sf.dynamicreports.report.builder.column.PercentageColumnBuilder;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
@@ -38,6 +39,9 @@ public class SimpleReportStep12 {
         build(imageName);
     }
 
+    public SimpleReportStep12(boolean show) {
+    }
+
     /**
      * <p>main.</p>
      *
@@ -52,6 +56,14 @@ public class SimpleReportStep12 {
     }
 
     private void build(String imageName) {
+        try {
+            generateReport().show(); // create and show report
+        } catch (DRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JasperReportBuilder generateReport() {
         CurrencyType currencyType = new CurrencyType();
 
         StyleBuilder boldStyle = stl.style().bold();
@@ -67,8 +79,8 @@ public class SimpleReportStep12 {
         TextColumnBuilder<BigDecimal> priceColumn = unitPriceColumn.multiply(quantityColumn).setTitle("Price").setDataType(currencyType);
         PercentageColumnBuilder pricePercColumn = col.percentageColumn("Price %", priceColumn);
         TextColumnBuilder<Integer> rowNumberColumn = col.reportRowNumberColumn("No.")
-                                                        // sets the fixed width of a column, width = 2 * character width
-                                                        .setFixedColumns(2).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+                // sets the fixed width of a column, width = 2 * character width
+                .setFixedColumns(2).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
         Bar3DChartBuilder itemChart = cht.bar3DChart().setTitle("Sales by item").setCategory(itemColumn).addSerie(cht.serie(unitPriceColumn), cht.serie(priceColumn));
         Bar3DChartBuilder itemChart2 = cht.bar3DChart().setTitle("Sales by item").setCategory(itemColumn).setUseSeriesAsCategory(true).addSerie(cht.serie(unitPriceColumn), cht.serie(priceColumn));
         ColumnGroupBuilder itemGroup = grp.group(itemColumn);
@@ -80,32 +92,33 @@ public class SimpleReportStep12 {
         ConditionalStyleBuilder condition4 = stl.conditionalStyle(cnd.smaller(priceColumn, 20)).setBackgroundColor(new Color(190, 0, 0)).bold();
         StyleBuilder priceStyle = stl.style().conditionalStyles(condition3, condition4);
         priceColumn.setStyle(priceStyle);
-        try {
-            report()// create new report design
-                    .setColumnTitleStyle(columnTitleStyle)
-                    .setSubtotalStyle(boldStyle)
-                    .highlightDetailEvenRows()
-                    .columns(// add columns
-                             rowNumberColumn, itemColumn, quantityColumn, unitPriceColumn, priceColumn, pricePercColumn)
-                    .columnGrid(rowNumberColumn, quantityColumn, unitPriceColumn, grid.verticalColumnGridList(priceColumn, pricePercColumn))
-                    .groupBy(itemGroup)
-                    .subtotalsAtSummary(sbt.sum(unitPriceColumn), sbt.sum(priceColumn))
-                    .subtotalsAtFirstGroupFooter(sbt.sum(unitPriceColumn), sbt.sum(priceColumn))
-                    .detailRowHighlighters(condition1, condition2)
-                    .title(// shows report title
-                           cmp.horizontalList()
-                              .add(cmp.image(Templates.class.getResource(imageName)).setFixedDimension(80, 80),
-                                   cmp.text("DynamicReports").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
-                                   cmp.text("Getting started").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT))
-                              .newRow()
-                              .add(cmp.filler().setStyle(stl.style().setTopBorder(stl.pen2Point())).setFixedHeight(10)))
-                    .pageFooter(cmp.pageXofY().setStyle(boldCenteredStyle))// shows number of page at page footer
-                    .summary(cmp.horizontalList(itemChart, itemChart2))
-                    .setDataSource(createDataSource())// set datasource
-                    .show(); // create and show report
-        } catch (DRException e) {
-            e.printStackTrace();
-        }
+
+        return assembleReport("/images/logo.png", boldStyle, boldCenteredStyle, columnTitleStyle, titleStyle, itemColumn, quantityColumn, unitPriceColumn, priceColumn, pricePercColumn, rowNumberColumn, itemChart, itemChart2, itemGroup, condition1, condition2);// set datasource
+
+    }
+
+    private JasperReportBuilder assembleReport(String imageName, StyleBuilder boldStyle, StyleBuilder boldCenteredStyle, StyleBuilder columnTitleStyle, StyleBuilder titleStyle, TextColumnBuilder<String> itemColumn, TextColumnBuilder<Integer> quantityColumn, TextColumnBuilder<BigDecimal> unitPriceColumn, TextColumnBuilder<BigDecimal> priceColumn, PercentageColumnBuilder pricePercColumn, TextColumnBuilder<Integer> rowNumberColumn, Bar3DChartBuilder itemChart, Bar3DChartBuilder itemChart2, ColumnGroupBuilder itemGroup, ConditionalStyleBuilder condition1, ConditionalStyleBuilder condition2) {
+        return report()// create new report design
+                .setColumnTitleStyle(columnTitleStyle)
+                .setSubtotalStyle(boldStyle)
+                .highlightDetailEvenRows()
+                .columns(// add columns
+                         rowNumberColumn, itemColumn, quantityColumn, unitPriceColumn, priceColumn, pricePercColumn)
+                .columnGrid(rowNumberColumn, quantityColumn, unitPriceColumn, grid.verticalColumnGridList(priceColumn, pricePercColumn))
+                .groupBy(itemGroup)
+                .subtotalsAtSummary(sbt.sum(unitPriceColumn), sbt.sum(priceColumn))
+                .subtotalsAtFirstGroupFooter(sbt.sum(unitPriceColumn), sbt.sum(priceColumn))
+                .detailRowHighlighters(condition1, condition2)
+                .title(// shows report title
+                       cmp.horizontalList()
+                          .add(cmp.image(Templates.class.getResource(imageName)).setFixedDimension(80, 80),
+                               cmp.text("DynamicReports").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
+                               cmp.text("Getting started").setStyle(titleStyle).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT))
+                          .newRow()
+                          .add(cmp.filler().setStyle(stl.style().setTopBorder(stl.pen2Point())).setFixedHeight(10)))
+                .pageFooter(cmp.pageXofY().setStyle(boldCenteredStyle))// shows number of page at page footer
+                .summary(cmp.horizontalList(itemChart, itemChart2))
+                .setDataSource(createDataSource());
     }
 
     private JRDataSource createDataSource() {

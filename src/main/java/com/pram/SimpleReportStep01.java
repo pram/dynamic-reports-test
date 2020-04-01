@@ -15,7 +15,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 public class SimpleReportStep01 {
 
     public SimpleReportStep01() {
-        this(false);
+        this(true);
     }
 
     public SimpleReportStep01(boolean show) {
