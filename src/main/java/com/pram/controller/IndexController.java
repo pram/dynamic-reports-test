@@ -75,7 +75,7 @@ public class IndexController {
         model.addAttribute("message", "PDF Report Generator");
         model.addAttribute("users", users);
 
-        SimpleReport report = new SimpleReportStep12(false);
+        SimpleReport report = createReport();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         report.generateReport().toPdf(out);
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
@@ -96,7 +96,7 @@ public class IndexController {
         model.addAttribute("message", "Excel Report Generator");
         model.addAttribute("users", users);
 
-        SimpleReport report = new SimpleReportStep12(false);
+        SimpleReport report = createReport();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         report.generateReport().toXlsx(out);
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
@@ -111,13 +111,17 @@ public class IndexController {
                 .body(new InputStreamResource(bis));
     }
 
+    private SimpleReport createReport() {
+        return new SimpleReportStep01(false);
+    }
+
     @RequestMapping(value = "/generate-image-preview", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<InputStreamResource> generateImagePreview(Model model) throws DRException {
 
         model.addAttribute("message", "Excel Report Generator");
         model.addAttribute("users", users);
 
-        SimpleReport report = new SimpleReportStep12(false);
+        SimpleReport report = createReport();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         report.generateReport().toImage(out, ImageType.PNG) ;
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
