@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class WelcomeController {
+public class IndexController {
 
     public static final String PAGE_INDEX = "index";
     // inject via application.properties
@@ -35,7 +36,13 @@ public class WelcomeController {
 
         model.addAttribute("message", name);
 
-        return "index"; //view
+        return PAGE_INDEX; //view
+    }
+
+    @RequestMapping(value="/do-stuff")
+    public String doStuffMethod() {
+        System.out.println("Success");
+        return PAGE_INDEX;
     }
 
 }

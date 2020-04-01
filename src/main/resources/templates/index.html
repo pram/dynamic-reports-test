@@ -30,6 +30,8 @@
         <li th:each="task : ${tasks}" th:text="${task}"></li>
     </ol>
 
+    <button type="button" th:onclick="|window.location.href='/do-stuff'|"> Hello</button>
+
 </main>
 <!-- /.container -->
 
