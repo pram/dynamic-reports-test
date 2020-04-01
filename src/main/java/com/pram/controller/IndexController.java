@@ -34,6 +34,17 @@ public class IndexController {
 
     private List<User> users = IndexController.generateUsers();
 
+    private List<String> reportTypes = IndexController.getReportTypes();
+
+    private static List<String> getReportTypes() {
+        List<String> retVal = new ArrayList<>();
+
+        retVal.add("Simple01");
+        retVal.add("Simple12");
+
+        return retVal;
+    }
+
     private static List<User> generateUsers() {
         List<User> retVal = new ArrayList<>();
 
@@ -48,6 +59,7 @@ public class IndexController {
     public String main(Model model) {
         model.addAttribute("message", message);
         model.addAttribute("users", users);
+        model.addAttribute("reportTypes", reportTypes);
 
         return PAGE_INDEX; //view
     }

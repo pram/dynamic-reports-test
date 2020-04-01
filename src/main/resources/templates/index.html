@@ -51,6 +51,12 @@
     <button type="button" th:onclick="|window.location.href='/generate-excel-report'|">Excel</button>
     <button type="button" th:onclick="|window.location.href='/generate-image-preview'|">Preview</button>
     <br/>
+    <select th:field="*{reportTypes}">
+        <option th:each="reportType: ${reportTypes}"
+                th:value="${reportType}"
+                th:text="${reportType}"/>
+    </select>
+    <br/>
     <img src="/generate-image-preview">
 
 </main>
