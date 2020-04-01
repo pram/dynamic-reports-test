@@ -1,5 +1,6 @@
 package com.pram;
 
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -14,7 +15,13 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 public class SimpleReportStep01 {
 
     public SimpleReportStep01() {
-        build();
+        this(false);
+    }
+
+    public SimpleReportStep01(boolean show) {
+        if (show) {
+            build();
+        }
     }
 
     public static void main(String[] args) {
@@ -23,20 +30,25 @@ public class SimpleReportStep01 {
 
     private void build() {
         try {
-            report()// create new report design
-                    // add columns
-                    .columns(
-                            col.column("Item", "item", type.stringType()),
-                            col.column("Quantity", "quantity", type.integerType()),
-                            col.column("Unit price", "unitprice", type.bigDecimalType())
-                    )
-                    .title(cmp.text("Getting started"))// shows report title
-                    .pageFooter(cmp.pageXofY())// shows number of page at page footer
-                    .setDataSource(createDataSource())// set datasource
-                    .show(); // create and show report
+            JasperReportBuilder jasperReportBuilder = generateReport();// set datasource
+
+            jasperReportBuilder.show(); // create and show report
         } catch (DRException e) {
             e.printStackTrace();
         }
+    }
+
+    public JasperReportBuilder generateReport() {
+        return report()// create new report design
+                // add columns
+                .columns(
+                        col.column("Item", "item", type.stringType()),
+                        col.column("Quantity", "quantity", type.integerType()),
+                        col.column("Unit price", "unitprice", type.bigDecimalType())
+                )
+                .title(cmp.text("Getting started"))// shows report title
+                .pageFooter(cmp.pageXofY())// shows number of page at page footer
+                .setDataSource(createDataSource());
     }
 
     private JRDataSource createDataSource() {

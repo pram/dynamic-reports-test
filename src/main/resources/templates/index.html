@@ -26,11 +26,29 @@
         </h2>
     </div>
 
-    <ol>
-        <li th:each="task : ${tasks}" th:text="${task}"></li>
-    </ol>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, stats : ${users}">
+            <td th:text="${user.id + 1}">1</td>
+            <td th:text="${user.firstName}">John</td>
+            <td th:text="${user.lastName}">Doe</td>
+            <td th:text="${user.email}">john.doe@example.com</td>
+            <td th:text="${user.age}">27</td>
+        </tr>
+        </tbody>
+    </table>
 
-    <button type="button" th:onclick="|window.location.href='/do-stuff'|"> Hello</button>
+    <button type="button" th:onclick="|window.location.href='/generate-pdf-report'|">PDF</button>
+    <button type="button" th:onclick="|window.location.href='/generate-report?type=excel'|">Excel</button>
 
 </main>
 <!-- /.container -->
