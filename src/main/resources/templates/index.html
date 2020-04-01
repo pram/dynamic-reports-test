@@ -57,7 +57,14 @@
                 th:text="${reportType}"/>
     </select>
     <br/>
+    <form action="#" data-th-action="@{/submit-report-request}" data-th-object="${reportDetails}" method="post">
+        <button type="submit" name="action" value="save">save</button>
+        <button type="submit" name="action" value="cancel">cancel</button>
+    </form>
+    <br/>
     <img src="/generate-image-preview">
+
+
 
 </main>
 <!-- /.container -->

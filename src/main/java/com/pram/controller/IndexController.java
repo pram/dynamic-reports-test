@@ -3,6 +3,7 @@ package com.pram.controller;
 import com.pram.SimpleReport;
 import com.pram.SimpleReportStep01;
 import com.pram.SimpleReportStep12;
+import com.pram.model.ReportDetails;
 import com.pram.model.User;
 import net.sf.dynamicreports.jasper.constant.ImageType;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,6 +37,8 @@ public class IndexController {
     private List<User> users = IndexController.generateUsers();
 
     private List<String> reportTypes = IndexController.getReportTypes();
+
+    boolean thing = false;
 
     private static List<String> getReportTypes() {
         List<String> retVal = new ArrayList<>();
@@ -60,6 +64,7 @@ public class IndexController {
         model.addAttribute("message", message);
         model.addAttribute("users", users);
         model.addAttribute("reportTypes", reportTypes);
+        model.addAttribute("reportDetails", new ReportDetails());
 
         return PAGE_INDEX; //view
     }
@@ -124,7 +129,11 @@ public class IndexController {
     }
 
     private SimpleReport createReport() {
-        return new SimpleReportStep01(false);
+        if (thing) {
+            return new SimpleReportStep01(false);
+        } else {
+            return new SimpleReportStep12(false);
+        }
     }
 
     @RequestMapping(value = "/generate-image-preview", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
@@ -146,6 +155,35 @@ public class IndexController {
                 .headers(headers)
                 .contentType(MediaType.IMAGE_PNG)
                 .body(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value="/submit-report-request", method=RequestMethod.POST, params="action=save")
+    public ModelAndView save(Model model) {
+
+        model.addAttribute("message", message);
+        model.addAttribute("users", users);
+        model.addAttribute("reportTypes", reportTypes);
+        model.addAttribute("reportDetails", new ReportDetails());
+
+        thing = true;
+
+        System.out.println("save");
+        return new ModelAndView(PAGE_INDEX);
+    }
+
+
+    @RequestMapping(value="/submit-report-request", method=RequestMethod.POST, params="action=cancel")
+    public ModelAndView cancel(Model model) {
+
+        model.addAttribute("message", message);
+        model.addAttribute("users", users);
+        model.addAttribute("reportTypes", reportTypes);
+        model.addAttribute("reportDetails", new ReportDetails());
+
+        thing = false;
+
+        System.out.println("cancel");
+        return new ModelAndView(PAGE_INDEX);
     }
 
 }
