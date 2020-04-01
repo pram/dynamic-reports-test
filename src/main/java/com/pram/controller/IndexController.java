@@ -30,9 +30,7 @@ public class IndexController {
 
     // /hello?name=kotlin
     @GetMapping("/hello")
-    public String mainWithParam(
-            @RequestParam(name = "name", required = false, defaultValue = "") 
-			String name, Model model) {
+    public String mainWithParam(@RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
 
         model.addAttribute("message", name);
 
@@ -40,8 +38,9 @@ public class IndexController {
     }
 
     @RequestMapping(value="/do-stuff")
-    public String doStuffMethod() {
+    public String doStuffMethod(Model model) {
         System.out.println("Success");
+        model.addAttribute("message", "Button Pusher");
         return PAGE_INDEX;
     }
 
