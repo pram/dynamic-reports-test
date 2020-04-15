@@ -5,6 +5,7 @@ import com.pram.SimpleReportStep01;
 import com.pram.SimpleReportStep12;
 import com.pram.model.ReportDetails;
 import com.pram.model.User;
+import net.sf.dynamicreports.jasper.builder.export.JasperImageExporterBuilder;
 import net.sf.dynamicreports.jasper.constant.ImageType;
 import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Value;
@@ -144,6 +145,10 @@ public class IndexController {
 
         SimpleReport report = createReport();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        JasperImageExporterBuilder x = new JasperImageExporterBuilder()
+//        x.setImageType(ImageType.PNG);
+//        x.setZoomRatio(0.5f);
+
         report.generateReport().toImage(out, ImageType.PNG) ;
         ByteArrayInputStream bis = new ByteArrayInputStream(out.toByteArray());
 
